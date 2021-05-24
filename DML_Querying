@@ -1,0 +1,41 @@
+/* Query 1 */
+SELECT DISTINCT c.firstName, c.lastName, hc.headSkill, c2.firstName, c2.lastName
+FROM HeadCoach hc
+INNER JOIN HeadCoach hc2
+INNER JOIN Coach c ON hc.coachID = c.coachID
+INNER JOIN Coach c2 ON hc2.coachID = c2.coachID
+WHERE hc.headSkill = hc2.headSkill
+AND c.coachID < c2.coachID
+AND hc.headSkill IN
+(
+SELECT headSkill /*, COUNT(headSkill) as count*/
+FROM HeadCoach
+GROUP BY headSkill
+HAVING COUNT(headSkill) >= 2 
+)
+ORDER BY hc.headSkill;
+
+/* Query 2 */
+/* assistant info */
+CREATE VIEW asst_coaches as(
+SELECT ac1.coachID, c.firstName, c.lastName, cs.skillType
+FROM AsstCoach ac1 
+INNER JOIN Coach c ON ac1.coachID = c.coachID
+INNER JOIN CoachSkills cs on c.coachID = cs.coachID);
+
+/* mentor info joined with assistant info */
+SELECT ast.firstName as 'Asst First Name', ast.lastName as 'Asst Last Name', c.firstName as 'Mentor First Name', c.lastName as 'Mentor Last Name', cs.skillType as 'Common Skill'
+FROM AsstCoach ac2 /* mentor info */
+INNER JOIN Coach c ON c.coachID = ac2.mentorID
+INNER JOIN CoachSkills cs ON c.coachID = cs.coachID
+INNER JOIN asst_coaches ast ON ac2.coachID = ast.coachID
+WHERE cs.skillType = ast.skillType
+ORDER BY ast.lastName, ast.firstName;
+
+/* Query 3 */
+SELECT p.firstName as 'Player First Name', p.lastName 'Player Last Name', s.sportName 'Sport Name', c.firstName as 'Coach First Name', c.lastName as 'Coach Last Name'
+FROM Players p
+INNER JOIN Sessions s ON p.playerID = s.playerID
+INNER JOIN CoachSport cs ON s.coachID = cs.coachID
+INNER JOIN Coach c ON cs.coachID = c.coachID
+ORDER BY p.lastName, p.firstName;
