@@ -1,0 +1,78 @@
+CREATE TABLE Players (
+playerID	VARCHAR(9)	NOT NULL,
+lastName	VARCHAR(70) NOT NULL,
+firstName	VARCHAR(70) NOT NULL,
+dateOfBirth date        NOT NULL,
+dateJoined	date        NOT NULL,
+CONSTRAINT players_pk PRIMARY KEY (playerID)
+);
+
+CREATE TABLE Sports (
+sportName	VARCHAR(20)	NOT NULL,
+CONSTRAINT Sports PRIMARY KEY (sportName)
+);
+
+CREATE TABLE Coach (
+coachID	VARCHAR(9) 	NOT NULL,
+lastName	VARCHAR(70) NOT NULL,
+firstName	VARCHAR(70) NOT NULL,
+CONSTRAINT coach_pk PRIMARY KEY (coachID)
+);
+
+CREATE TABLE Skills (
+skillType	VARCHAR(50)	NOT NULL,
+CONSTRAINT skills_pk PRIMARY KEY (skillType)
+);
+
+CREATE TABLE CoachSkills (
+coachID	VARCHAR(9) 	NOT NULL,
+skillType	VARCHAR(50)	NOT NULL,
+CONSTRAINT coach_skill_fk_01 FOREIGN KEY (coachID)
+	REFERENCES Coach (coachID),
+CONSTRAINT coach_skill_fk_02 FOREIGN KEY (skillType)
+	REFERENCES Skills (skillType),
+CONSTRAINT coach_skill_pk PRIMARY KEY (skillType, coachID)
+);
+
+CREATE TABLE HeadCoach (
+coachID	VARCHAR(9) 	NOT NULL,
+headSkill	VARCHAR(50)	NOT NULL,
+CONSTRAINT head_coach_fk_01 FOREIGN KEY (coachID)
+	REFERENCES Coach (coachID),
+CONSTRAINT head_coach_fk_02 FOREIGN KEY (coachID, headSkill)
+	REFERENCES CoachSkills (coachID, skillType),
+CONSTRAINT head_coach_pk PRIMARY KEY (coachID, headSkill)
+);
+
+CREATE TABLE AsstCoach (
+coachID	VARCHAR(9) 	NOT NULL,
+mentorID    VARCHAR(9) 	NOT NULL,
+CONSTRAINT asst_coach_fk01 FOREIGN KEY (coachID)
+	REFERENCES Coach (coachID),
+CONSTRAINT asst_coach_fk02 FOREIGN KEY (mentorID)
+	REFERENCES Coach (coachID),
+CONSTRAINT asst_coach_pk PRIMARY KEY (coachID)
+);
+
+
+CREATE TABLE CoachSport (
+coachID	VARCHAR(9) 	NOT NULL,
+sportName	VARCHAR(20)	NOT NULL,
+CONSTRAINT coach_sport_fk_01 FOREIGN KEY (sportName)
+	REFERENCES Sports (sportName),
+CONSTRAINT coach_sport_fk_02 FOREIGN KEY (coachID)
+	REFERENCES Coach (coachID),
+CONSTRAINT coach_sport_pk PRIMARY KEY (coachID, sportName)
+);
+
+CREATE TABLE  Sessions (
+playerID    VARCHAR(9)	NOT NULL,
+sportName	VARCHAR(20)	NOT NULL,
+coachID	VARCHAR(9) 	NOT NULL,
+headSkill	VARCHAR(50)	NOT NULL,
+CONSTRAINT sessions_fk_01 FOREIGN KEY (sportName, coachID)
+	REFERENCES CoachSport (sportName, coachID),
+CONSTRAINT sessions_fk_02 FOREIGN KEY (coachID, headSkill)
+	REFERENCES HeadCoach (coachID, headSkill),
+CONSTRAINT sessions_pk PRIMARY KEY (playerID, sportName, coachID)
+); 
