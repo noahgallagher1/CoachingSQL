@@ -1,0 +1,95 @@
+insert into Players (playerID, lastName, firstName, dateOfBirth, dateJoined)
+values('620400401', 'Apple', 'David', '1645-12-13', '2021-04-30'),
+	  ('030502001', 'Frog', 'Kermit', '2005-05-15', '2007-01-10'),
+	  ('504002001', 'Andreson', 'Bob', '1900-11-15', '2015-02-15'),
+	  ('120607001', 'Bannana', 'Davidison', '1875-04-01', '1999-06-22'),
+	  ('270700301', 'Hamilton', 'Mark', '1896-09-05', '1985-03-07');
+
+insert into Sports(sportName)
+values('Tennis'),
+	  ('Boxing'),
+      ('Golf'),
+      ('Cricket');
+
+
+/* head coaches*/
+insert into Coach(coachID, lastName, firstName)
+values('717000801', 'Peterson', 'Strict'), 
+	  ('717111647', 'Johnson', 'Coach'),
+        ('717000006', 'Jackson', 'Phil'),
+	  ('717000012', 'Core', 'Hardee'),
+        ('123456789', 'Sama', 'Sanji');
+
+/* assistant coaches*/
+insert into Coach(coachID, lastName, firstName)
+values('142417021', 'Learnings', 'Peter'),
+	  ('524645601', 'Disciple', 'John'),
+        ('524000562', 'Adoring', 'Fan'),
+	  ('521687121', 'Helpers', 'Kyle');
+		
+insert into Skills(skillType)
+values('endurance training'),
+	('passing'),
+	('team leadership'),
+      ('coordination'),
+      ('agility training'),
+      ('speed training'),
+      ('strength training'),
+      ('physical therapy');
+
+/* head coaches skill*/
+insert into CoachSkills(coachID, skillType)
+Values('717000801','endurance training'),
+      ('717000801','agility training'),
+      ('717000801','speed training'),
+      ('717000801','strength training'),
+	('717111647', 'passing'),
+      ('717111647', 'coordination'),
+      ('717111647', 'agility training'),
+      ('717000012','team leadership'),
+      ('717000012','coordination'),
+      ('717000012','physical therapy'),
+      ('717000012','endurance training'),
+      ('717000012','strength training'),
+      ('123456789', 'passing');
+      
+
+/* assistant coaches skill*/     
+insert into CoachSkills(coachID, skillType)
+values('142417021','endurance training'),
+	  ('524645601', 'passing'),
+        ('521687121','team leadership'); 
+      
+insert into HeadCoach(coachID, headSkill)
+values('717000801','endurance training'),
+	('717111647','passing'),
+      ('717000012','team leadership'),
+      ('123456789', 'passing');
+
+insert into AsstCoach(coachID, mentorID)
+values('142417021', '717000801'),
+	  ('524645601', '717111647'),
+	  ('521687121', '717000012');
+      
+insert into CoachSport(coachID, sportName)
+values('717000801', 'Tennis'), /*head coach*/
+      ('142417021', 'Tennis'), /*assistant coach*/
+      
+      ('717111647','Boxing'),
+      ('524645601','Boxing'),	
+      
+      ('717000012','Golf'),
+      ('521687121','Golf'),
+
+      ('123456789', 'Cricket');
+
+
+      
+insert into Sessions (playerID, sportName, coachID, headSkill)
+values('620400401', 'Tennis', '717000801', 'endurance training'),
+	('030502001', 'Boxing', '717111647', 'passing'),
+      ('504002001','Golf','717000012','team leadership');
+insert into Sessions (playerID, sportName, coachID, headSkill)
+values('620400401', 'Tennis', '717000801', 'endurance training'),
+	('030502001', 'Boxing', '717111647', 'passing'),
+      ('504002001','Golf','717000012','team leadership');
