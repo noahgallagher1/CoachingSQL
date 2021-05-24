@@ -1,0 +1,25 @@
+/* Trigger 1 */
+CREATE DEFINER = CURRENT_USER TRIGGER `TermProject3`.`Sessions_BEFORE_INSERT` BEFORE INSERT ON `Sessions` FOR EACH ROW
+IF (SELECT count(playerID) FROM Sessions GROUP BY playerID HAVING count(playerID) = 3)  THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Cannot receive coaching in more than 3 sports';
+	END IF;
+END
+
+/* Trigger 2 */
+CREATE DEFINER = CURRENT_USER TRIGGER `TermProject3`.`CoachSkills_BEFORE_DELETE` BEFORE DELETE ON `CoachSkills` FOR EACH ROW
+IF (SELECT coachID FROM coachSkills GROUP BY coachID HAVING count(coachID) = 2) THEN
+				SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Cannot delete a coach skill without going below 2';
+	END IF; 
+END
+
+/* Trigger 3 */
+CREATE DEFINER = CURRENT_USER TRIGGER `TermProject3`.`Players_BEFORE_INSERT` BEFORE INSERT ON `Players` FOR EACH ROW
+BEGIN
+    IF (DATEDIFF(new.dateJoined, new.dateOfBirth)  < 3650) 
+    THEN
+		SIGNAL SQLSTATE '45000'
+	      SET MESSAGE_TEXT = 'Player must be older than 10 years old to join';
+		END IF;
+END
